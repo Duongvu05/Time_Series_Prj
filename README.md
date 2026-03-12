@@ -111,7 +111,7 @@ pdflatex slides.tex
 
 ## Answers to Questions
 
-### Q1 – Value Functions with Policy π (Lecture 2, pp. 29–47)
+### Q1 – Value Functions with Policy $\pi$ (Lecture 2, pp. 29–47)
 
 **MDP:** 7 states: C1, C2, C3, Pass, Pub, FB, Sleep (terminal).
 
@@ -120,39 +120,40 @@ $$V^\pi(s) = \sum_a \pi(a|s) \sum_{s'} P(s'|s,a)[R(s,a,s') + \gamma V^\pi(s')]$$
 $$Q^\pi(s,a) = \sum_{s'} P(s'|s,a)[R(s,a,s') + \gamma V^\pi(s')]$$
 $$V^\pi(s) = \sum_a \pi(a|s) Q^\pi(s,a) \quad \text{(consistency)}$$
 
-**Computed results** (γ=1, uniform random policy):
+**Computed results** ($\gamma=1$, uniform random policy):
 
-| State | V^π | V\* | π\* |
-|-------|-----|-----|-----|
-| C1 | −3.31 | 6.00 | Study |
-| C2 | +0.69 | 8.00 | Study |
-| C3 | +5.38 | 10.00 | Study |
-| Pass | 10.00 | 10.00 | Sleep |
-| FB | −4.31 | 6.00 | Quit |
+| State | $V^\pi$ | $V^*$ | $\pi^*$ |
+|-------|---------|-------|---------|
+| C1 | $-3.31$ | $6.00$ | Study |
+| C2 | $+0.69$ | $8.00$ | Study |
+| C3 | $+5.38$ | $10.00$ | Study |
+| Pass | $10.00$ | $10.00$ | Sleep |
+| FB | $-4.31$ | $6.00$ | Quit |
 
 **Optimal equations:**  
-$V^* (s) = \max_a Q^* (s,a)$, found by Value Iteration (apply $T^*$ until $|V_{k+1} - V_k|_\infty < \theta$).
+$$V^*(s) = \max_a Q^*(s,a)$$
+found by Value Iteration (apply $T^*$ until $|V_{k+1} - V_k|_\infty < \theta$).
 
 ---
 
 ### Q2 – Iterative Policy Evaluation, k=2 and k=3 (Lecture 3, pp. 10–11)
 
-**Setup:** 4×4 grid, random policy (1/4 each direction), γ=1, R=−1, terminals: {0, 15}.
+**Setup:** 4×4 grid, random policy ($1/4$ each direction), $\gamma=1$, $R=-1$, terminals: $\{0, 15\}$.
 
-**k=1:** Every non-terminal cell gets V₁(s) = −1.0 (since V₀=0 everywhere).
+**k=1:** Every non-terminal cell gets $V_1(s) = -1.0$ (since $V_0=0$ everywhere).
 
 **k=2 (hand computation):**
 
 State 1 (top row, col 1) — N hits wall, reflects back to state 1:
 ```
-N → 1 (wall):  −1 + V₁(1) = −1 + (−1) = −2
-S → 5:         −1 + V₁(5) = −2
-W → 0 (term):  −1 + V₁(0) = −1 + 0 = −1
-E → 2:         −1 + V₁(2) = −2
-V₂(1) = ¼(−2 − 2 − 1 − 2) = −7/4 = −1.75
+N → 1 (wall):  $-1 + V_1(1) = -1 + (-1) = -2$
+S → 5:         $-1 + V_1(5) = -2$
+W → 0 (term):  $-1 + V_1(0) = -1 + 0 = -1$
+E → 2:         $-1 + V_1(2) = -2$
+$V_2(1) = 1/4(-2 - 2 - 1 - 2) = -7/4 = -1.75$
 ```
 
-State 5 (interior): all 4 neighbors non-terminal:  `V₂(5) = ¼(−8) = −2.00`
+State 5 (interior): all 4 neighbors non-terminal:  `$V_2(5) = 1/4(-8) = -2.00$`
 
 **k=3 (hand computation)** using V₂:
 
@@ -165,7 +166,7 @@ Vk = iterative_policy_eval(k=3)          # any k
 V_inf, steps = run_to_convergence()       # k → ∞
 ```
 
-**k → ∞:** Values decrease monotonically. Grid world converges in ~200 sweeps (episodic → effectively contracting). Greedy policy from V^π always points toward nearest terminal.
+**k → ∞:** Values decrease monotonically. Grid world converges in ~200 sweeps (episodic → effectively contracting). Greedy policy from $V^\pi$ always points toward nearest terminal.
 
 ---
 
@@ -188,17 +189,17 @@ Run `uv run python -m src.q3_jacks_car.jacks_car` to reproduce the Silver slide 
 
 See full proof: [`src/q4_contraction/proof.md`](src/q4_contraction/proof.md)
 
-**Theorem (Banach Fixed-Point):** If $T$ is a γ-contraction on a complete metric space, it has a unique fixed point, and iterates converge at rate $O(\gamma^k)$.
+**Theorem (Banach Fixed-Point):** If $T$ is a $\gamma$-contraction on a complete metric space, it has a unique fixed point, and iterates converge at rate $O(\gamma^k)$.
 
-**T^π is a γ-contraction:**
+**$T^\pi$ is a $\gamma$-contraction:**
 $$|T^\pi V_1 - T^\pi V_2|_\infty \leq \gamma |V_1 - V_2|_\infty$$
-*Proof:* Pull out γ, use triangle inequality, stochastic matrix rows sum to 1.
+*Proof:* Pull out $\gamma$, use triangle inequality, stochastic matrix rows sum to 1.
 
-**T\* is a γ-contraction:** Use |max f − max g| ≤ max|f−g|.
+**$T^*$ is a $\gamma$-contraction:** Use $|max f - max g| \leq max|f-g|$.
 
 **Policy iteration converges:** monotone improvement + finitely many policies ⟹ termination at V\*.
 
 **Numerical verification:**
 ```python
-uv run python -m src.q4_contraction.demo   # checks γ ∈ {0.5, 0.9, 0.99}
+uv run python -m src.q4_contraction.demo   # checks $\gamma \in \{0.5, 0.9, 0.99\}$
 ```

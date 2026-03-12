@@ -13,19 +13,19 @@ Jack manages two car rental locations. Each morning, customers arrive and rent c
 | `MAX_CARS` | Max cars per location | 20 |
 | `MAX_MOVE` | Max cars moved overnight | 5 |
 | Rental reward | Per rental | +$10 |
-| Move cost | Per car moved | −$2 |
-| λ_rent₁ | Poisson rate, rentals at loc 1 | 3 |
-| λ_rent₂ | Poisson rate, rentals at loc 2 | 4 |
-| λ_ret₁  | Poisson rate, returns at loc 1 | 3 |
-| λ_ret₂  | Poisson rate, returns at loc 2 | 2 |
-| γ | Discount factor | 0.9 |
+| Move cost | Per car moved | -$2 |
+| $\lambda_{\text{rent}1}$ | Poisson rate, rentals at loc 1 | 3 |
+| $\lambda_{\text{rent}2}$ | Poisson rate, rentals at loc 2 | 4 |
+| $\lambda_{\text{ret}1}$  | Poisson rate, returns at loc 1 | 3 |
+| $\lambda_{\text{ret}2}$  | Poisson rate, returns at loc 2 | 2 |
+| $\gamma$ | Discount factor | 0.9 |
 
 ---
 
 ## MDP Formulation
 
-**State:** s = (n₁, n₂) — cars available at start of day at each location.  
-**Action:** a ∈ {−5, …, +5} — cars moved from loc2 → loc1 (negative = opposite).  
+**State:** $s = (n_1, n_2)$ — cars available at start of day at each location.  
+**Action:** $a \in \{-5, \dots, +5\}$ — cars moved from loc2 → loc1 (negative = opposite).  
 **Transition:** Stochastic (Poisson demands and returns).
 
 ### Bellman Expectation Equation
@@ -35,7 +35,7 @@ $$V^\pi(n_1, n_2) = \sum_{a} \pi(a|s) \Bigl[ -2|a| + \mathbb{E}_{req_1, req_2, r
 where:
 - $rent_i = \min(req_i, n_i')$ (can't rent more than available)
 - $n_i' = \min(n_i \pm a, 20)$ after movement
-- $n_i^{end} = \min(n_i' - rent_i + ret_i, 20)$
+- $n_i^{\text{end}} = \min(n_i' - rent_i + ret_i, 20)$
 
 ---
 
@@ -59,7 +59,7 @@ This is a **single matrix-vector product per state transition**, making evaluati
 
 ### Step 1: Policy Evaluation
 
-Iterate Bellman expectation until $\|\Delta V\| < \theta$:
+Iterate Bellman expectation until $||\Delta V|| < \theta$:
 
 $$V_{k+1}(s) = -2|a| + \text{EXP\_REW}_1[n_1'] + \text{EXP\_REW}_2[n_2'] + \gamma \cdot \text{TRANS}_1[n_1',:] \cdot V_k \cdot \text{TRANS}_2[n_2',:]^\top$$
 
@@ -75,8 +75,8 @@ Repeat until policy is stable.
 
 After policy iteration converges (~4 iterations):
 - The optimal policy forms a characteristic pattern where Jack moves cars from the richer (more-returning) location to the one with higher demand.
-- Policy roughly: move ~1–2 cars from loc1→loc2 when loc1 is crowded, or from loc2→loc1 otherwise.
-- V* surface is smooth and increases with total cars available.
+- Policy roughly: move $\approx 1$–$2$ cars from loc1→loc2 when loc1 is crowded, or from loc2→loc1 otherwise.
+- $V^*$ surface is smooth and increases with total cars available.
 
 ---
 

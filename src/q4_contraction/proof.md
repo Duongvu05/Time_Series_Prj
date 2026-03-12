@@ -14,7 +14,7 @@ $$\mathcal{V} = \{V : S \to \mathbb{R} \mid V \text{ bounded}\}$$
 
 is a **complete metric space** under the sup-norm:
 
-$$\|V\|_\infty = \max_{s \in S} |V(s)|, \quad d(V_1, V_2) = \|V_1 - V_2\|_\infty$$
+$$|V|_\infty = \max_{s \in S} |V(s)|, \quad d(V_1, V_2) = |V_1 - V_2|_\infty$$
 
 ---
 
@@ -39,7 +39,7 @@ Define the **Bellman Expectation Operator** $T^\pi : \mathcal{V} \to \mathcal{V}
 
 $$(T^\pi V)(s) = \sum_a \pi(a|s) \sum_{s'} P(s'|s,a)\bigl[R(s,a,s') + \gamma\,V(s')\bigr]$$
 
-**Claim:** $T^\pi$ is a $\gamma$-contraction under $\|\cdot\|_\infty$.
+**Claim:** $T^\pi$ is a $\gamma$-contraction under $||\cdot||_\infty$.
 
 **Proof:**
 
@@ -48,12 +48,12 @@ Let $V_1, V_2 \in \mathcal{V}$ be arbitrary. Then:
 $$|(T^\pi V_1)(s) - (T^\pi V_2)(s)|$$
 $$= \Bigl|\sum_a \pi(a|s) \sum_{s'} P(s'|s,a) \gamma[V_1(s') - V_2(s')]\Bigr|$$
 $$\leq \gamma \sum_a \pi(a|s) \sum_{s'} P(s'|s,a) |V_1(s') - V_2(s')|$$
-$$\leq \gamma \sum_a \pi(a|s) \sum_{s'} P(s'|s,a) \|V_1 - V_2\|_\infty$$
-$$= \gamma \cdot \|V_1 - V_2\|_\infty \cdot \underbrace{\sum_a \pi(a|s) \sum_{s'} P(s'|s,a)}_{=1}$$
+$$\leq \gamma \sum_a \pi(a|s) \sum_{s'} P(s'|s,a) |V_1 - V_2|_\infty$$
+$$= \gamma \cdot |V_1 - V_2|_\infty \cdot \underbrace{\sum_a \pi(a|s) \sum_{s'} P(s'|s,a)}_{=1}$$
 
 Therefore:
 
-$$\|T^\pi V_1 - T^\pi V_2\|_\infty \leq \gamma \|V_1 - V_2\|_\infty$$
+$$|T^\pi V_1 - T^\pi V_2|_\infty \leq \gamma |V_1 - V_2|_\infty$$
 
 **Conclusion:** $T^\pi$ is a $\gamma$-contraction. By Banach's theorem, iterating $V_{k+1} = T^\pi V_k$ from any $V_0$ converges to the **unique** fixed point $V^\pi$, satisfying $T^\pi V^\pi = V^\pi$ — i.e., the Bellman Expectation Equation. $\blacksquare$
 
@@ -74,13 +74,13 @@ Use the identity $|\max_a f(a) - \max_a g(a)| \leq \max_a |f(a) - g(a)|$:
 $$|(T^* V_1)(s) - (T^* V_2)(s)|$$
 $$\leq \max_a \Bigl|\sum_{s'} P(s'|s,a)\,\gamma [V_1(s') - V_2(s')]\Bigr|$$
 $$\leq \gamma \max_a \sum_{s'} P(s'|s,a) |V_1(s') - V_2(s')|$$
-$$\leq \gamma \|V_1 - V_2\|_\infty$$
+$$\leq \gamma |V_1 - V_2|_\infty$$
 
-Therefore $\|T^* V_1 - T^* V_2\|_\infty \leq \gamma \|V_1 - V_2\|_\infty$.
+Therefore $|T^* V_1 - T^* V_2|_\infty \leq \gamma |V_1 - V_2|_\infty$.
 
 **Conclusion:** $T^*$ has a unique fixed point $V^*$ satisfying $T^* V^* = V^*$ — the **Bellman Optimality Equation**. Value Iteration ($V_{k+1} = T^* V_k$) converges to $V^*$ with:
 
-$$\|V_k - V^*\|_\infty \leq \gamma^k \|V_0 - V^*\|_\infty \quad \blacksquare$$
+$$|V_k - V^*|_\infty \leq \gamma^k |V_0 - V^*|_\infty \quad \blacksquare$$
 
 ---
 
