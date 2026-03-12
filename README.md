@@ -132,7 +132,7 @@ $$V^{\pi}(s) = \sum_a \pi(a|s) Q^{\pi}(s,a) \quad \text{(consistency)}$$
 
 **Optimal equations:**  
 $$V^{\ast}(s) = \max_{a} Q^{\ast}(s,a)$$
-found by Value Iteration (apply $T^{*}$ until $|V_{k+1} - V_{k}|_{\infty} < \theta$).
+found by Value Iteration (apply $T^{\ast}$ until $|V_{k+1} - V_{k}|_{\infty} < \theta$).
 
 ---
 

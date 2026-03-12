@@ -78,9 +78,9 @@ $$Q^{\pi}(C_{1}, \text{Facebook}) = -1 + V^{\pi}(\text{FB}) \approx -1 + (-2.3) 
 
 The **Bellman Optimality Equation**:
 
-$$V^{*}(s) = \max_a \sum_{s'} P(s'|s,a)\bigl[R + \gamma\,V^{*}(s')\bigr]$$
-$$Q^{*}(s,a) = \sum_{s'} P(s'|s,a)\bigl[R + \gamma\,V^{*}(s')\bigr]$$
-$$\pi^{*}(s) = \arg\max_a Q^{*}(s,a)$$
+$$V^{\ast}(s) = \max_{a} \sum_{s'} P(s'|s,a)\bigl[R + \gamma\,V^{\ast}(s')\bigr]$$
+$$Q^{\ast}(s,a) = \sum_{s'} P(s'|s,a)\bigl[R + \gamma\,V^{\ast}(s')\bigr]$$
+$$\pi^{\ast}(s) = \arg\max_{a} Q^{\ast}(s,a)$$
 
 **Value Iteration** applies the Bellman optimality operator repeatedly:
 
@@ -90,7 +90,7 @@ until $|V_{k+1} - V_{k}|_{\infty} < \theta$.
 
 **Optimal values (γ=1, from code):**
 
-| State | $V^*$ |
+| State | $V^{\ast}$ |
 |-------|-------|
 | C1    | $\approx 6.0$ |
 | C2    | $\approx 8.0$ |
@@ -100,9 +100,9 @@ until $|V_{k+1} - V_{k}|_{\infty} < \theta$.
 | FB    | $\approx 6.0$ |
 | Sleep | $0.0$ |
 
-**Optimal policy** (greedy from V*):
+**Optimal policy** (greedy from $V^{\ast}$):
 
-| State | $\pi^*(s)$ |
+| State | $\pi^{\ast}(s)$ |
 |-------|-------|
 | C1    | Study |
 | C2    | Study |
