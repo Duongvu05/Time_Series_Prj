@@ -9,20 +9,11 @@ wheels/
 # Virtual environments
 .venv
 
-# LaTeX build artifacts
-*.aux
-*.fdb_latexmk
-*.fls
-*.log
-*.nav
-*.out
-*.snm
-*.toc
-*.vrb
-*.synctex.gz
+# LaTeX and slides
+slides/
 
 # Generated / binary outputs
-slides/slides.pdf
+*.pdf
 notebooks/jacks_car_policy.png
 notebooks/contraction_convergence.png
 

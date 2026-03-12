@@ -131,7 +131,7 @@ $$V^\pi(s) = \sum_a \pi(a|s) Q^\pi(s,a) \quad \text{(consistency)}$$
 | FB | −4.31 | 6.00 | Quit |
 
 **Optimal equations:**  
-$V^*(s) = \max_a Q^*(s,a)$, found by **Value Iteration** (apply $T^*$ until $\|V_{k+1}-V_k\|_\infty < \theta$).
+$V^* (s) = \max_a Q^* (s,a)$, found by Value Iteration (apply $T^*$ until $|V_{k+1} - V_k|_\infty < \theta$).
 
 ---
 
@@ -156,7 +156,7 @@ State 5 (interior): all 4 neighbors non-terminal:  `V₂(5) = ¼(−8) = −2.00
 
 **k=3 (hand computation)** using V₂:
 
-State 1: `V₃(1) = ¼(−2.75 − 3.00 − 1.00 − 3.00) = −2.4375`
+State 1: $V_3(1) = 1/4 \times (-2.75 - 3.00 - 1.00 - 3.00) = -2.4375$
 
 **Code for any k:**
 ```python
@@ -191,7 +191,7 @@ See full proof: [`src/q4_contraction/proof.md`](src/q4_contraction/proof.md)
 **Theorem (Banach Fixed-Point):** If $T$ is a γ-contraction on a complete metric space, it has a unique fixed point, and iterates converge at rate $O(\gamma^k)$.
 
 **T^π is a γ-contraction:**
-$$\|T^\pi V_1 - T^\pi V_2\|_\infty \leq \gamma \|V_1 - V_2\|_\infty$$
+$$|T^\pi V_1 - T^\pi V_2|_\infty \leq \gamma |V_1 - V_2|_\infty$$
 *Proof:* Pull out γ, use triangle inequality, stochastic matrix rows sum to 1.
 
 **T\* is a γ-contraction:** Use |max f − max g| ≤ max|f−g|.
