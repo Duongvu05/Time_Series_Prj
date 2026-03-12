@@ -174,9 +174,9 @@ $V_{\infty}, \text{steps} = \text{run\_to\_convergence}()       # k \to \infty$
 
 **MDP:** State $s=(n_{1},n_{2})$, action $a \in [-5,5]$ (cars moved overnight).
 
-**Key optimisation:** Precompute Poisson sums into matrices $\text{EXP\\_REW}[n]$ and $\text{TRANS}[n,n']$, so the Bellman update reduces to:
+**Key optimisation:** Precompute Poisson sums into matrices $\text{ExpRew}[n]$ and $\text{Trans}[n,n']$, so the Bellman update reduces to:
 ```
-E[V(n₁',n₂')] = TRANS₁[n₁,:] @ V @ TRANS₂[n₂,:]ᵀ
+E[V(n₁',n₂')] = Trans₁[n₁,:] @ V @ Trans₂[n₂,:]ᵀ
 ```
 *(Implemented as efficient matrix-vector products)*
 

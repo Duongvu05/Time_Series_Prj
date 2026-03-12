@@ -45,15 +45,15 @@ Under the uniform random policy, each action is equally probable.
 
 **Bellman system ($V[\text{Sleep}] = 0$):**
 
-$$V(C_1) = \frac{1}{2}[-2 + V(C_2)] + \frac{1}{2}[-1 + V(FB)]$$
+$$V(C_{1}) = \frac{1}{2}[-2 + V(C_{2})] + \frac{1}{2}[-1 + V(\text{FB})]$$
 
-$$V(C_2) = \frac{1}{2}[-2 + V(C_3)] + \frac{1}{2}[-2 + 0]$$
+$$V(C_{2}) = \frac{1}{2}[-2 + V(C_{3})] + \frac{1}{2}[-2 + 0]$$
 
-$$V(C_3) = \frac{1}{3}[-2 + V(\text{Pass})] + \frac{1}{3}[1 + 0.2\,V(C_1) + 0.4\,V(C_2) + 0.4\,V(C_3)]$$
+$$V(C_{3}) = \frac{1}{3}[-2 + V(\text{Pass})] + \frac{1}{3}[1 + 0.2\,V(C_{1}) + 0.4\,V(C_{2}) + 0.4\,V(C_{3})]$$
 
-$$V(Pass) = +10 + 0 = 10 \quad\text{(1 action: Sleep)}$$
+$$V(\text{Pass}) = +10 + 0 = 10 \quad\text{(1 action: Sleep)}$$
 
-$$V(\text{FB}) = \frac{1}{2}[-1 + V(FB)] + \frac{1}{2}[0 + V(C_1)]$$
+$$V(\text{FB}) = \frac{1}{2}[-1 + V(\text{FB})] + \frac{1}{2}[0 + V(C_{1})]$$
 
 Solving the linear system (from code):
 
@@ -69,8 +69,8 @@ Solving the linear system (from code):
 
 *(slide approximations; exact values from iterative solution)*
 
-$$Q^\pi(C_1, \text{Study}) = -2 + V^\pi(C_2) \approx -2 + (-2.7) = -4.7$$
-$$Q^\pi(C_1, \text{Facebook}) = -1 + V^\pi(FB) \approx -1 + (-2.3) = -3.3$$
+$$Q^{\pi}(C_{1}, \text{Study}) = -2 + V^{\pi}(C_{2}) \approx -2 + (-2.7) = -4.7$$
+$$Q^{\pi}(C_{1}, \text{Facebook}) = -1 + V^{\pi}(\text{FB}) \approx -1 + (-2.3) = -3.3$$
 
 ---
 
@@ -115,10 +115,10 @@ until $|V_{k+1} - V_{k}|_{\infty} < \theta$.
 ## 5. Relationship Summary
 
 ```
-$$V^\pi(s) = \sum_a \pi(a|s) Q^\pi(s,a) \quad [\text{average over policy}]$$
-$$Q^\pi(s,a) = R + \gamma \sum_{s'} P(s'|s,a) V^\pi(s') \quad [\text{Bellman expectation}]$$
+$$V^{\pi}(s) = \sum_{a} \pi(a|s) Q^{\pi}(s,a) \quad [\text{average over policy}]$$
+$$Q^{\pi}(s,a) = R + \gamma \sum_{s'} P(s'|s,a) V^{\pi}(s') \quad [\text{Bellman expectation}]$$
 
-$$V^*(s) = \max_a Q^*(s,a) \quad [\text{optimal: take best action}]$$
-$$Q^*(s,a) = R + \gamma \sum_{s'} P(s'|s,a) V^*(s') \quad [\text{Bellman optimality}]$$
-$$\pi^*(s) = \arg\max_a Q^*(s,a) \quad [\text{greedy wrt } Q^*]$$
+$$V^{\ast}(s) = \max_{a} Q^{\ast}(s,a) \quad [\text{optimal: take best action}]$$
+$$Q^{\ast}(s,a) = R + \gamma \sum_{s'} P(s'|s,a) V^{\ast}(s') \quad [\text{Bellman optimality}]$$
+$$\pi^{\ast}(s) = \arg\max_{a} Q^{\ast}(s,a) \quad [\text{greedy wrt } Q^{\ast}]$$
 ```

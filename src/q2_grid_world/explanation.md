@@ -55,21 +55,21 @@ Using $V_{1}$ (all non-terminal = $-1$, terminals = $0$), we compute $V_{2}$.
 - W → state 0 (terminal): $R + V_{1}(0) = -1 + 0 = -1$
 - E → state 2: $R + V_{1}(2) = -1 + (-1) = -2$
 
-$V_2(1) = (1/4)(-2 - 2 - 1 - 2) = \mathbf{(1/4)(-7) = -1.75}$
+$V_{2}(1) = (1/4)(-2 - 2 - 1 - 2) = \mathbf{(1/4)(-7) = -1.75}$
 
 **State 0 (corner, terminal):** $V_{2}(0) = 0$
 
 **State 5** (interior):
 - N → 1: $-1+(-1)=-2$; S → 9: $-2$; W → 4: $-2$; E → 6: $-2$
 
-$V_2(5) = (1/4)(-8) = \mathbf{-2.0}$
+$V_{2}(5) = (1/4)(-8) = \mathbf{-2.0}$
 
 **State 15 (terminal):** $V_{2}(15) = 0$
 
 **State 14** (row 3, col 2):
 - S → 14 (wall): $-1+(-1)=-2$; N → 10: $-2$; W → 13: $-2$; E → 15: $-1+0=-1$
 
-$V_2(14) = (1/4)(-2 - 2 - 2 - 1) = \mathbf{-1.75}$
+$V_{2}(14) = (1/4)(-2 - 2 - 2 - 1) = \mathbf{-1.75}$
 
 Full V₂ grid (by symmetry and computation):
 ```
@@ -91,7 +91,7 @@ Applying the same formula to $V_{2}$:
 - W → 0: $-1+0=-1.00$
 - E → 2: $-1+(-2.00)=-3.00$
 
-$V_3(1) = (1/4)(-2.75 - 3.00 - 1.00 - 3.00) = (1/4)(-9.75) \approx \mathbf{-2.4375}$
+$V_{3}(1) = (1/4)(-2.75 - 3.00 - 1.00 - 3.00) = (1/4)(-9.75) \approx \mathbf{-2.4375}$
 
 For interior **state 5**:
 - N → 1: $-1+(-1.75)$; S → 9: $-1+(-2.00)$; W → 4: $-1+(-1.75)$; E → 6: $-1+(-2.00)$
@@ -112,7 +112,7 @@ The sequence $V_{k}$ converges to $V^{\pi}$, the **true value function under the
 2. **Convergence rate:** Since $\gamma = 1$, convergence is not guaranteed in general, but the grid world is **episodic** (absorbing terminals), so the operator $T^{\pi}$ is still a contraction in practice.
 3. **Limit $V^{\pi}$**: Represents the expected total reward for a random-walk agent. Cells near terminals have $V$ closer to $0$; cells far away have the most negative values ($\approx -14$).
 
-**The greedy policy from $V^\pi$ always points towards the nearest terminal,** which is the intuitive optimal policy.
+**The greedy policy from $V^{\pi}$ always points towards the nearest terminal,** which is the intuitive optimal policy.
 
 ---
 

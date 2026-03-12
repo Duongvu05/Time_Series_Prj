@@ -43,13 +43,13 @@ where:
 
 Instead of summing over Poisson samples at every iteration, we precompute for each location:
 
-$$\text{EXP\\_REW}_{i}[n] = \sum_{req=0}^{\infty} P(req;\lambda_{i}) \cdot \min(req, n) \cdot 10$$
+$$\text{ExpRew}_{i}[n] = \sum_{req=0}^{\infty} P(req;\lambda_{i}) \cdot \min(req, n) \cdot 10$$
 
-$$\text{TRANS}_{i}[n, n_{\text{next}}] = \sum_{req} \sum_{ret} P(req;\lambda_{i}) \cdot P(ret;\lambda_{i}^{\text{ret}}) \cdot \mathbf{1}[\min(n-req^{+}, 0)+ret = n_{\text{next}}]$$
+$$\text{Trans}_{i}[n, n_{\text{next}}] = \sum_{req} \sum_{ret} P(req;\lambda_{i}) \cdot P(ret;\lambda_{i}^{\text{ret}}) \cdot \mathbf{1}[\min(n-req^{+}, 0)+ret = n_{\text{next}}]$$
 
 Then the expected future value for state $(n_{1}, n_{2})$ reduces to:
 
-$$\mathbb{E}[V(n_{1}', n_{2}')] = (\text{TRANS}_{1}[n_{1}, :]) \cdot V \cdot (\text{TRANS}_{2}[n_{2}, :])^{\top}$$
+$$\mathbb{E}[V(n_{1}', n_{2}')] = (\text{Trans}_{1}[n_{1}, :]) \cdot V \cdot (\text{Trans}_{2}[n_{2}, :])^{\top}$$
 
 This is a **single matrix-vector product per state transition**, making evaluation fast.
 
@@ -61,7 +61,7 @@ This is a **single matrix-vector product per state transition**, making evaluati
 
 Iterate Bellman expectation until $||\Delta V|| < \theta$:
 
-$$V_{k+1}(s) = -2|a| + \text{EXP\_REW}_{1}[n_{1}'] + \text{EXP\_REW}_{2}[n_{2}'] + \gamma \cdot \text{TRANS}_{1}[n_{1}',:] \cdot V_{k} \cdot \text{TRANS}_{2}[n_{2}',:]^{\top}$$
+$$V_{k+1}(s) = -2|a| + \text{ExpRew}_{1}[n_{1}'] + \text{ExpRew}_{2}[n_{2}'] + \gamma \cdot \text{Trans}_{1}[n_{1}',:] \cdot V_{k} \cdot \text{Trans}_{2}[n_{2}',:]^{\top}$$
 
 ### Step 2: Policy Improvement
 
