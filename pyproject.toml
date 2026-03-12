@@ -1,0 +1,56 @@
+[project]
+name = "rl-lecture-project"
+version = "0.1.0"
+description = "RL Class Project: Silver Lectures 2 & 3 – MDPs, Dynamic Programming"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "numpy>=2.0",
+    "matplotlib>=3.9",
+    "scipy>=1.14",
+    "jupyter>=1.1",
+    "notebook>=7.3",
+    "ipykernel>=6.29",
+    "loguru>=0.7.3",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.3",
+    "ruff>=0.9",
+    "pyright>=1.1",
+]
+
+[tool.ruff]
+line-length = 88
+target-version = "py311"
+exclude = ["notebooks/"]
+
+[tool.ruff.lint]
+select = ["E", "W", "F", "I", "N", "UP"]
+ignore = ["E501", "N806", "N803"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["src"]
+
+[tool.pyright]
+pythonVersion = "3.11"
+typeCheckingMode = "basic"
+include = ["src", "tests"]
+venvPath = "."
+venv = ".venv"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = "-v --tb=short"
+pythonpath = ["."]
+
+[dependency-groups]
+dev = [
+    "pyright>=1.1.408",
+    "pytest>=9.0.2",
+    "ruff>=0.15.5",
+]
