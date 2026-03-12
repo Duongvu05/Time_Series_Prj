@@ -24,13 +24,13 @@ Jack manages two car rental locations. Each morning, customers arrive and rent c
 
 ## MDP Formulation
 
-**State:** $s = (n_1, n_2)$ — cars available at start of day at each location.  
+**State:** $s = (n_{1}, n_{2})$ — cars available at start of day at each location.  
 **Action:** $a \in \{-5, \dots, +5\}$ — cars moved from loc2 → loc1 (negative = opposite).  
 **Transition:** Stochastic (Poisson demands and returns).
 
 ### Bellman Expectation Equation
 
-$$V^{\pi}(n_1, n_2) = \sum_{a} \pi(a|s) \Bigl[ -2|a| + \mathbb{E}_{\text{req}_1, \text{req}_2, \text{ret}_1, \text{ret}_2}\bigl[10(\text{rent}_1 + \text{rent}_2) + \gamma\,V^{\pi}(n_1', n_2')\bigr] \Bigr]$$
+$$V^{\pi}(n_{1}, n_{2}) = \sum_{a} \pi(a|s) \Bigl[ -2|a| + \mathbb{E}_{\text{req}_{1}, \text{req}_{2}, \text{ret}_{1}, \text{ret}_{2}}\bigl[10(\text{rent}_{1} + \text{rent}_{2}) + \gamma\,V^{\pi}(n_{1}', n_{2}')\bigr] \Bigr]$$
 
 where:
 - $\text{rent}_{i} = \min(\text{req}_{i}, n_{i}')$ (can't rent more than available)
@@ -43,7 +43,7 @@ where:
 
 Instead of summing over Poisson samples at every iteration, we precompute for each location:
 
-$$\text{EXP\_REW}_{i}[n] = \sum_{req=0}^{\infty} P(req;\lambda_{i}) \cdot \min(req, n) \cdot 10$$
+$$\text{EXP\\_REW}_{i}[n] = \sum_{req=0}^{\infty} P(req;\lambda_{i}) \cdot \min(req, n) \cdot 10$$
 
 $$\text{TRANS}_{i}[n, n_{\text{next}}] = \sum_{req} \sum_{ret} P(req;\lambda_{i}) \cdot P(ret;\lambda_{i}^{\text{ret}}) \cdot \mathbf{1}[\min(n-req^{+}, 0)+ret = n_{\text{next}}]$$
 

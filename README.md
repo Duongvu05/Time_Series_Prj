@@ -150,10 +150,10 @@ N → 1 (wall):  $-1 + V_{1}(1) = -1 + (-1) = -2$
 S → 5:         $-1 + V_{1}(5) = -2$
 W → 0 (term):  $-1 + V_{1}(0) = -1 + 0 = -1$
 E → 2:         $-1 + V_{1}(2) = -2$
-$V_{2}(1) = 1/4(-2 - 2 - 1 - 2) = -7/4 = -1.75$
+$V_{2}(1) = \frac{1}{4}(-2 - 2 - 1 - 2) = -7/4 = -1.75$
 ```
 
-State 5 (interior): all 4 neighbors non-terminal:  `$V_{2}(5) = 1/4(-8) = -2.00$`
+State 5 (interior): all 4 neighbors non-terminal:  `$V_{2}(5) = \frac{1}{4}(-8) = -2.00$`
 
 **k=3 (hand computation)** using V₂:
 
@@ -174,7 +174,7 @@ $V_{\infty}, \text{steps} = \text{run\_to\_convergence}()       # k \to \infty$
 
 **MDP:** State $s=(n_{1},n_{2})$, action $a \in [-5,5]$ (cars moved overnight).
 
-**Key optimisation:** Precompute Poisson sums into matrices $\text{EXP\_REW}[n]$ and $\text{TRANS}[n,n']$, so the Bellman update reduces to:
+**Key optimisation:** Precompute Poisson sums into matrices $\text{EXP\\_REW}[n]$ and $\text{TRANS}[n,n']$, so the Bellman update reduces to:
 ```
 E[V(n₁',n₂')] = TRANS₁[n₁,:] @ V @ TRANS₂[n₂,:]ᵀ
 ```
