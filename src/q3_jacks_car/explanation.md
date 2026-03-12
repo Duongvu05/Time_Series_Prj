@@ -14,10 +14,10 @@ Jack manages two car rental locations. Each morning, customers arrive and rent c
 | `MAX_MOVE` | Max cars moved overnight | 5 |
 | Rental reward | Per rental | +$10 |
 | Move cost | Per car moved | -$2 |
-| $\lambda_{\text{rent}1}$ | Poisson rate, rentals at loc 1 | 3 |
-| $\lambda_{\text{rent}2}$ | Poisson rate, rentals at loc 2 | 4 |
-| $\lambda_{\text{ret}1}$  | Poisson rate, returns at loc 1 | 3 |
-| $\lambda_{\text{ret}2}$  | Poisson rate, returns at loc 2 | 2 |
+| $\lambda_{\text{rent}_{1}}$ | Poisson rate, rentals at loc 1 | 3 |
+| $\lambda_{\text{rent}_{2}}$ | Poisson rate, rentals at loc 2 | 4 |
+| $\lambda_{\text{ret}_{1}}$  | Poisson rate, returns at loc 1 | 3 |
+| $\lambda_{\text{ret}_{2}}$  | Poisson rate, returns at loc 2 | 2 |
 | $\gamma$ | Discount factor | 0.9 |
 
 ---
@@ -30,12 +30,12 @@ Jack manages two car rental locations. Each morning, customers arrive and rent c
 
 ### Bellman Expectation Equation
 
-$$V^\pi(n_1, n_2) = \sum_{a} \pi(a|s) \Bigl[ -2|a| + \mathbb{E}_{req_1, req_2, ret_1, ret_2}\bigl[10(rent_1 + rent_2) + \gamma\,V^\pi(n_1', n_2')\bigr] \Bigr]$$
+$$V^{\pi}(n_1, n_2) = \sum_{a} \pi(a|s) \Bigl[ -2|a| + \mathbb{E}_{\text{req}_1, \text{req}_2, \text{ret}_1, \text{ret}_2}\bigl[10(\text{rent}_1 + \text{rent}_2) + \gamma\,V^{\pi}(n_1', n_2')\bigr] \Bigr]$$
 
 where:
-- $rent_i = \min(req_i, n_i')$ (can't rent more than available)
-- $n_i' = \min(n_i \pm a, 20)$ after movement
-- $n_i^{\text{end}} = \min(n_i' - rent_i + ret_i, 20)$
+- $\text{rent}_{i} = \min(\text{req}_{i}, n_{i}')$ (can't rent more than available)
+- $n_{i}' = \min(n_{i} \pm a, 20)$ after movement
+- $n_{i}^{\text{end}} = \min(n_{i}' - \text{rent}_{i} + \text{ret}_{i}, 20)$
 
 ---
 
@@ -43,13 +43,13 @@ where:
 
 Instead of summing over Poisson samples at every iteration, we precompute for each location:
 
-$$\text{EXP\_REW}_i[n] = \sum_{req=0}^{\infty} P(req;\lambda_i) \cdot \min(req, n) \cdot 10$$
+$$\text{EXP\_REW}_{i}[n] = \sum_{req=0}^{\infty} P(req;\lambda_{i}) \cdot \min(req, n) \cdot 10$$
 
-$$\text{TRANS}_i[n, n_{next}] = \sum_{req} \sum_{ret} P(req;\lambda_i) \cdot P(ret;\lambda_i^{ret}) \cdot \mathbf{1}[\min(n-req^+, 0)+ret = n_{next}]$$
+$$\text{TRANS}_{i}[n, n_{\text{next}}] = \sum_{req} \sum_{ret} P(req;\lambda_{i}) \cdot P(ret;\lambda_{i}^{\text{ret}}) \cdot \mathbf{1}[\min(n-req^{+}, 0)+ret = n_{\text{next}}]$$
 
-Then the expected future value for state (n₁, n₂) reduces to:
+Then the expected future value for state $(n_{1}, n_{2})$ reduces to:
 
-$$\mathbb{E}[V(n_1', n_2')] = (\text{TRANS}_1[n_1, :]) \cdot V \cdot (\text{TRANS}_2[n_2, :])^\top$$
+$$\mathbb{E}[V(n_{1}', n_{2}')] = (\text{TRANS}_{1}[n_{1}, :]) \cdot V \cdot (\text{TRANS}_{2}[n_{2}, :])^{\top}$$
 
 This is a **single matrix-vector product per state transition**, making evaluation fast.
 
@@ -61,7 +61,7 @@ This is a **single matrix-vector product per state transition**, making evaluati
 
 Iterate Bellman expectation until $||\Delta V|| < \theta$:
 
-$$V_{k+1}(s) = -2|a| + \text{EXP\_REW}_1[n_1'] + \text{EXP\_REW}_2[n_2'] + \gamma \cdot \text{TRANS}_1[n_1',:] \cdot V_k \cdot \text{TRANS}_2[n_2',:]^\top$$
+$$V_{k+1}(s) = -2|a| + \text{EXP\_REW}_{1}[n_{1}'] + \text{EXP\_REW}_{2}[n_{2}'] + \gamma \cdot \text{TRANS}_{1}[n_{1}',:] \cdot V_{k} \cdot \text{TRANS}_{2}[n_{2}',:]^{\top}$$
 
 ### Step 2: Policy Improvement
 
@@ -76,7 +76,7 @@ Repeat until policy is stable.
 After policy iteration converges (~4 iterations):
 - The optimal policy forms a characteristic pattern where Jack moves cars from the richer (more-returning) location to the one with higher demand.
 - Policy roughly: move $\approx 1$–$2$ cars from loc1→loc2 when loc1 is crowded, or from loc2→loc1 otherwise.
-- $V^*$ surface is smooth and increases with total cars available.
+- $V^{\ast}$ surface is smooth and increases with total cars available.
 
 ---
 

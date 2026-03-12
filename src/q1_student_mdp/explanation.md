@@ -9,15 +9,15 @@
 
 Given a fixed policy $\pi$, the **state-value function** $V^\pi(s)$ satisfies:
 
-$$V^\pi(s) = \sum_{a} \pi(a|s) \sum_{s'} P(s'|s,a)\bigl[R(s,a,s') + \gamma \, V^\pi(s')\bigr]$$
+$$V^{\pi}(s) = \sum_{a} \pi(a|s) \sum_{s'} P(s'|s,a)\bigl[R(s,a,s') + \gamma \, V^{\pi}(s')\bigr]$$
 
 The **action-value function** (Q-value) is:
 
-$$Q^\pi(s,a) = \sum_{s'} P(s'|s,a)\bigl[R(s,a,s') + \gamma \, V^\pi(s')\bigr]$$
+$$Q^{\pi}(s,a) = \sum_{s'} P(s'|s,a)\bigl[R(s,a,s') + \gamma \, V^{\pi}(s')\bigr]$$
 
 These satisfy the **consistency relation**:
 
-$$V^\pi(s) = \sum_a \pi(a|s)\,Q^\pi(s,a)$$
+$$V^{\pi}(s) = \sum_a \pi(a|s)\,Q^{\pi}(s,a)$$
 
 ---
 
@@ -74,19 +74,19 @@ $$Q^\pi(C_1, \text{Facebook}) = -1 + V^\pi(FB) \approx -1 + (-2.3) = -3.3$$
 
 ---
 
-## 4. Optimal Value Function $V^*$ and $Q^*$
+## 4. Optimal Value Function $V^{\ast}$ and $Q^{\ast}$
 
 The **Bellman Optimality Equation**:
 
-$$V^*(s) = \max_a \sum_{s'} P(s'|s,a)\bigl[R + \gamma\,V^*(s')\bigr]$$
-$$Q^*(s,a) = \sum_{s'} P(s'|s,a)\bigl[R + \gamma\,V^*(s')\bigr]$$
-$$\pi^*(s) = \arg\max_a Q^*(s,a)$$
+$$V^{*}(s) = \max_a \sum_{s'} P(s'|s,a)\bigl[R + \gamma\,V^{*}(s')\bigr]$$
+$$Q^{*}(s,a) = \sum_{s'} P(s'|s,a)\bigl[R + \gamma\,V^{*}(s')\bigr]$$
+$$\pi^{*}(s) = \arg\max_a Q^{*}(s,a)$$
 
 **Value Iteration** applies the Bellman optimality operator repeatedly:
 
-$$V_{k+1}(s) = \max_a \sum_{s'} P(s'|s,a)\bigl[R + \gamma\,V_k(s')\bigr]$$
+$$V_{k+1}(s) = \max_a \sum_{s'} P(s'|s,a)\bigl[R + \gamma\,V_{k}(s')\bigr]$$
 
-until $\|V_{k+1} - V_k\|_\infty < \theta$.
+until $|V_{k+1} - V_{k}|_{\infty} < \theta$.
 
 **Optimal values (γ=1, from code):**
 

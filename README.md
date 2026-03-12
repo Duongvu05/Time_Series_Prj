@@ -28,7 +28,7 @@ Time_Series_Prj/
 │   └── slides.tex          ← LaTeX Beamer presentation (compile → slides.pdf)
 ├── src/
 │   ├── q1_student_mdp/
-│   │   ├── mdp.py           ← Student MDP: V^π, Q^π, V*, Q*, π*
+│   │   ├── mdp.py           ← Student MDP: $V^{\pi}$, $Q^{\pi}$, $V^{\ast}$, $Q^{\ast}$, $\pi^{\ast}$
 │   │   └── explanation.md
 │   ├── q2_grid_world/
 │   │   ├── grid_world.py    ← Iterative Policy Evaluation
@@ -116,23 +116,23 @@ pdflatex slides.tex
 **MDP:** 7 states: C1, C2, C3, Pass, Pub, FB, Sleep (terminal).
 
 **Bellman Expectation Equation:**
-$$V^\pi(s) = \sum_a \pi(a|s) \sum_{s'} P(s'|s,a)[R(s,a,s') + \gamma V^\pi(s')]$$
-$$Q^\pi(s,a) = \sum_{s'} P(s'|s,a)[R(s,a,s') + \gamma V^\pi(s')]$$
-$$V^\pi(s) = \sum_a \pi(a|s) Q^\pi(s,a) \quad \text{(consistency)}$$
+$$V^{\pi}(s) = \sum_a \pi(a|s) \sum_{s'} P(s'|s,a)[R(s,a,s') + \gamma V^{\pi}(s')]$$
+$$Q^{\pi}(s,a) = \sum_{s'} P(s'|s,a)[R(s,a,s') + \gamma V^{\pi}(s')]$$
+$$V^{\pi}(s) = \sum_a \pi(a|s) Q^{\pi}(s,a) \quad \text{(consistency)}$$
 
 **Computed results** ($\gamma=1$, uniform random policy):
 
-| State | $V^\pi$ | $V^*$ | $\pi^*$ |
+| State | $V^{\pi}$ | $V^{\ast}$ | $\pi^{\ast}$ |
 |-------|---------|-------|---------|
-| C1 | $-3.31$ | $6.00$ | Study |
-| C2 | $+0.69$ | $8.00$ | Study |
-| C3 | $+5.38$ | $10.00$ | Study |
-| Pass | $10.00$ | $10.00$ | Sleep |
-| FB | $-4.31$ | $6.00$ | Quit |
+| C1 | $-3.31$ | $6.00$ | $\pi^{\ast}(\text{C1}) = \text{Study}$ |
+| C2 | $+0.69$ | $8.00$ | $\pi^{\ast}(\text{C2}) = \text{Study}$ |
+| C3 | $+5.38$ | $10.00$ | $\pi^{\ast}(\text{C3}) = \text{Study}$ |
+| Pass | $10.00$ | $10.00$ | $\pi^{\ast}(\text{Pass}) = \text{Sleep}$ |
+| FB | $-4.31$ | $6.00$ | $\pi^{\ast}(\text{FB}) = \text{Quit}$ |
 
 **Optimal equations:**  
-$$V^*(s) = \max_a Q^*(s,a)$$
-found by Value Iteration (apply $T^*$ until $|V_{k+1} - V_k|_\infty < \theta$).
+$$V^{\ast}(s) = \max_{a} Q^{\ast}(s,a)$$
+found by Value Iteration (apply $T^{*}$ until $|V_{k+1} - V_{k}|_{\infty} < \theta$).
 
 ---
 
@@ -140,30 +140,30 @@ found by Value Iteration (apply $T^*$ until $|V_{k+1} - V_k|_\infty < \theta$).
 
 **Setup:** 4×4 grid, random policy ($1/4$ each direction), $\gamma=1$, $R=-1$, terminals: $\{0, 15\}$.
 
-**k=1:** Every non-terminal cell gets $V_1(s) = -1.0$ (since $V_0=0$ everywhere).
+**k=1:** Every non-terminal cell gets $V_{1}(s) = -1.0$ (since $V_{0}=0$ everywhere).
 
 **k=2 (hand computation):**
 
 State 1 (top row, col 1) — N hits wall, reflects back to state 1:
 ```
-N → 1 (wall):  $-1 + V_1(1) = -1 + (-1) = -2$
-S → 5:         $-1 + V_1(5) = -2$
-W → 0 (term):  $-1 + V_1(0) = -1 + 0 = -1$
-E → 2:         $-1 + V_1(2) = -2$
-$V_2(1) = 1/4(-2 - 2 - 1 - 2) = -7/4 = -1.75$
+N → 1 (wall):  $-1 + V_{1}(1) = -1 + (-1) = -2$
+S → 5:         $-1 + V_{1}(5) = -2$
+W → 0 (term):  $-1 + V_{1}(0) = -1 + 0 = -1$
+E → 2:         $-1 + V_{1}(2) = -2$
+$V_{2}(1) = 1/4(-2 - 2 - 1 - 2) = -7/4 = -1.75$
 ```
 
-State 5 (interior): all 4 neighbors non-terminal:  `$V_2(5) = 1/4(-8) = -2.00$`
+State 5 (interior): all 4 neighbors non-terminal:  `$V_{2}(5) = 1/4(-8) = -2.00$`
 
 **k=3 (hand computation)** using V₂:
 
-State 1: $V_3(1) = 1/4 \times (-2.75 - 3.00 - 1.00 - 3.00) = -2.4375$
+State 1: $V_{3}(1) = 1/4 \times (-2.75 - 3.00 - 1.00 - 3.00) = -2.4375$
 
 **Code for any k:**
 ```python
 from src.q2_grid_world.grid_world import iterative_policy_eval, run_to_convergence
-Vk = iterative_policy_eval(k=3)          # any k
-V_inf, steps = run_to_convergence()       # k → ∞
+$V_{k} = \text{iterative\_policy\_eval}(k=3)$          # any k
+$V_{\infty}, \text{steps} = \text{run\_to\_convergence}()       # k \to \infty$
 ```
 
 **k → ∞:** Values decrease monotonically. Grid world converges in ~200 sweeps (episodic → effectively contracting). Greedy policy from $V^\pi$ always points toward nearest terminal.
@@ -172,14 +172,15 @@ V_inf, steps = run_to_convergence()       # k → ∞
 
 ### Q3 – Jack's Car Rental (Lecture 3, pp. 14–15)
 
-**MDP:** State s=(n₁,n₂), action a∈[−5,5] (cars moved overnight).
+**MDP:** State $s=(n_{1},n_{2})$, action $a \in [-5,5]$ (cars moved overnight).
 
-**Key optimisation:** Precompute Poisson sums into matrices `EXP_REW[n]` and `TRANS[n,n']`, so the Bellman update reduces to:
+**Key optimisation:** Precompute Poisson sums into matrices $\text{EXP\_REW}[n]$ and $\text{TRANS}[n,n']$, so the Bellman update reduces to:
 ```
 E[V(n₁',n₂')] = TRANS₁[n₁,:] @ V @ TRANS₂[n₂,:]ᵀ
 ```
+*(Implemented as efficient matrix-vector products)*
 
-**Policy Iteration:** Converges in ~4 steps. Final policy moves cars from loc2→loc1 when loc1 is depleted (λ_rent2=4 > λ_rent1=3, so loc2 fills up faster).
+**Policy Iteration:** Converges in $\approx 4$ steps. Final policy moves cars from loc2→loc1 when loc1 is depleted ($\lambda_{\text{rent}_{2}}=4 > \lambda_{\text{rent}_{1}}=3$, so loc2 fills up faster).
 
 Run `uv run python -m src.q3_jacks_car.jacks_car` to reproduce the Silver slide policy heatmap.
 
@@ -191,13 +192,13 @@ See full proof: [`src/q4_contraction/proof.md`](src/q4_contraction/proof.md)
 
 **Theorem (Banach Fixed-Point):** If $T$ is a $\gamma$-contraction on a complete metric space, it has a unique fixed point, and iterates converge at rate $O(\gamma^k)$.
 
-**$T^\pi$ is a $\gamma$-contraction:**
-$$|T^\pi V_1 - T^\pi V_2|_\infty \leq \gamma |V_1 - V_2|_\infty$$
+**$T^{\pi}$ is a $\gamma$-contraction:**
+$$|T^{\pi} V_{1} - T^{\pi} V_{2}|_{\infty} \leq \gamma |V_{1} - V_{2}|_{\infty}$$
 *Proof:* Pull out $\gamma$, use triangle inequality, stochastic matrix rows sum to 1.
 
-**$T^*$ is a $\gamma$-contraction:** Use $|max f - max g| \leq max|f-g|$.
+**$T^{\ast}$ is a $\gamma$-contraction:** Use $|\max_{a} f(a) - \max_{a} g(a)| \leq \max_{a} |f(a) - g(a)|$.
 
-**Policy iteration converges:** monotone improvement + finitely many policies ⟹ termination at V\*.
+**Policy iteration converges:** monotone improvement + finitely many policies $\Longrightarrow$ termination at $V^{\ast}$.
 
 **Numerical verification:**
 ```python
