@@ -145,13 +145,12 @@ found by Value Iteration (apply $T^{*}$ until $|V_{k+1} - V_{k}|_{\infty} < \the
 **k=2 (hand computation):**
 
 State 1 (top row, col 1) — N hits wall, reflects back to state 1:
-```
-N → 1 (wall):  $-1 + V_{1}(1) = -1 + (-1) = -2$
-S → 5:         $-1 + V_{1}(5) = -2$
-W → 0 (term):  $-1 + V_{1}(0) = -1 + 0 = -1$
-E → 2:         $-1 + V_{1}(2) = -2$
+- N → 1 (wall):  $-1 + V_{1}(1) = -1 + (-1) = -2$
+- S → 5:         $-1 + V_{1}(5) = -2$
+- W → 0 (term):  $-1 + V_{1}(0) = -1 + 0 = -1$
+- E → 2:         $-1 + V_{1}(2) = -2$
+
 $V_{2}(1) = \frac{1}{4}(-2 - 2 - 1 - 2) = -7/4 = -1.75$
-```
 
 State 5 (interior): all 4 neighbors non-terminal:  `$V_{2}(5) = \frac{1}{4}(-8) = -2.00$`
 
@@ -162,8 +161,8 @@ State 1: $V_{3}(1) = 1/4 \times (-2.75 - 3.00 - 1.00 - 3.00) = -2.4375$
 **Code for any k:**
 ```python
 from src.q2_grid_world.grid_world import iterative_policy_eval, run_to_convergence
-$V_{k} = \text{iterative\_policy\_eval}(k=3)$          # any k
-$V_{\infty}, \text{steps} = \text{run\_to\_convergence}()       # k \to \infty$
+V_k = iterative_policy_eval(k=3)          # any k
+V_inf, steps = run_to_convergence()       # k -> inf
 ```
 
 **k → ∞:** Values decrease monotonically. Grid world converges in ~200 sweeps (episodic → effectively contracting). Greedy policy from $V^\pi$ always points toward nearest terminal.
@@ -175,9 +174,8 @@ $V_{\infty}, \text{steps} = \text{run\_to\_convergence}()       # k \to \infty$
 **MDP:** State $s=(n_{1},n_{2})$, action $a \in [-5,5]$ (cars moved overnight).
 
 **Key optimisation:** Precompute Poisson sums into matrices $\text{ExpRew}[n]$ and $\text{Trans}[n,n']$, so the Bellman update reduces to:
-```
-E[V(n₁',n₂')] = Trans₁[n₁,:] @ V @ Trans₂[n₂,:]ᵀ
-```
+
+$$\mathbb{E}[V(n_{1}', n_{2}')] = \text{Trans}_{1}[n_{1}, :] \cdot V \cdot \text{Trans}_{2}[n_{2}, :]^{\top}$$
 *(Implemented as efficient matrix-vector products)*
 
 **Policy Iteration:** Converges in $\approx 4$ steps. Final policy moves cars from loc2→loc1 when loc1 is depleted ($\lambda_{\text{rent}_{2}}=4 > \lambda_{\text{rent}_{1}}=3$, so loc2 fills up faster).

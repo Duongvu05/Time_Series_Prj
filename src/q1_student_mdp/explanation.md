@@ -114,11 +114,9 @@ until $|V_{k+1} - V_{k}|_{\infty} < \theta$.
 
 ## 5. Relationship Summary
 
-```
 $$V^{\pi}(s) = \sum_{a} \pi(a|s) Q^{\pi}(s,a) \quad [\text{average over policy}]$$
 $$Q^{\pi}(s,a) = R + \gamma \sum_{s'} P(s'|s,a) V^{\pi}(s') \quad [\text{Bellman expectation}]$$
 
 $$V^{\ast}(s) = \max_{a} Q^{\ast}(s,a) \quad [\text{optimal: take best action}]$$
 $$Q^{\ast}(s,a) = R + \gamma \sum_{s'} P(s'|s,a) V^{\ast}(s') \quad [\text{Bellman optimality}]$$
 $$\pi^{\ast}(s) = \arg\max_{a} Q^{\ast}(s,a) \quad [\text{greedy wrt } Q^{\ast}]$$
-```
