@@ -25,7 +25,7 @@ Jack manages two car rental locations. Each morning, customers arrive and rent c
 ## MDP Formulation
 
 **State:** $s = (n_{1}, n_{2})$ — cars available at start of day at each location.  
-**Action:** $a \in \{-5, \dots, +5\}$ — cars moved from loc2 → loc1 (negative = opposite).  
+**Action:** $a \in \{-5, \dots, +5\}$ — cars moved from loc1 → loc2 (negative = opposite).
 **Transition:** Stochastic (Poisson demands and returns).
 
 ### Bellman Expectation Equation

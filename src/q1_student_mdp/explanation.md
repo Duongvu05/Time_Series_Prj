@@ -7,7 +7,7 @@
 
 ## 1. Bellman Expectation Equation (Value Function with policy π)
 
-Given a fixed policy $\pi$, the **state-value function** $V^\pi(s)$ satisfies:
+Given a fixed policy $\pi$, the **state-value function** $V^\pi(s)$ satisfies the Bellman expectation equation:
 
 $$V^{\pi}(s) = \sum_{a} \pi(a|s) \sum_{s'} P(s'|s,a)\bigl[R(s,a,s') + \gamma \, V^{\pi}(s')\bigr]$$
 
@@ -15,20 +15,20 @@ The **action-value function** (Q-value) is:
 
 $$Q^{\pi}(s,a) = \sum_{s'} P(s'|s,a)\bigl[R(s,a,s') + \gamma \, V^{\pi}(s')\bigr]$$
 
-These satisfy the **consistency relation**:
-
-$$V^{\pi}(s) = \sum_a \pi(a|s)\,Q^{\pi}(s,a)$$
+Relationship: $V^{\pi}(s) = \sum_a \pi(a|s)\,Q^{\pi}(s,a)$.
 
 ---
 
-## 2. Student MDP Transitions & Rewards
+## 2. Student MDP Definition (Slide 29 Version)
+
+**States:** {C1, C2, C3, Pass, FB} are non-terminal. {Sleep} is terminal.
 
 | From  | Action   | To    | Prob | Reward |
 |-------|----------|-------|------|--------|
 | C1    | Study    | C2    | 1.0  | −2     |
 | C1    | Facebook | FB    | 1.0  | −1     |
 | C2    | Study    | C3    | 1.0  | −2     |
-| C2    | Sleep    | Sleep | 1.0  | −2     |
+| C2    | Sleep    | Sleep | 1.0  | 0      |
 | C3    | Study    | Pass  | 1.0  | −2     |
 | C3    | Pub      | C1    | 0.2  | +1     |
 | C3    | Pub      | C2    | 0.4  | +1     |
@@ -39,76 +39,43 @@ $$V^{\pi}(s) = \sum_a \pi(a|s)\,Q^{\pi}(s,a)$$
 
 ---
 
-## 3. Policy Evaluation: Uniform Random Policy ($\gamma = 1$)
+## 3. Policy Evaluation: Uniform Random Policy ($\gamma = 1, \pi(a|s) = 0.5$)
 
-Under the uniform random policy, each action is equally probable.
+Each decision state has 2 actions, so $\pi(a|s) = 0.5$.
 
-**Bellman system ($V[\text{Sleep}] = 0$):**
+**Bellman Equations:**
 
-$$V(C_{1}) = \frac{1}{2}[-2 + V(C_{2})] + \frac{1}{2}[-1 + V(\text{FB})]$$
+1.  $V(C_1) = 0.5 \underbrace{[-2 + V(C_2)]}_{Q(C_1, \text{Study})} + 0.5 \underbrace{[-1 + V(\text{FB})]}_{Q(C_1, \text{FB})}$
+2.  $V(C_2) = 0.5 \underbrace{[-2 + V(C_3)]}_{Q(C_2, \text{Study})} + 0.5 \underbrace{[0 + 0]}_{Q(C_2, \text{Sleep})}$
+3.  $V(C_3) = 0.5 \underbrace{[-2 + V(\text{Pass})]}_{Q(C_3, \text{Study})} + 0.5 \underbrace{[1 + 0.2 V(C_1) + 0.4 V(C_2) + 0.4 V(C_3)]}_{Q(C_3, \text{Pub})}$
+4.  $V(\text{FB}) = 0.5 \underbrace{[-1 + V(\text{FB})]}_{Q(\text{FB}, \text{FB})} + 0.5 \underbrace{[0 + V(C_1)]}_{Q(\text{FB}, \text{Quit})}$
+5.  $V(\text{Pass}) = +10 + 0 = 10 \quad$ (1 action: Sleep)
 
-$$V(C_{2}) = \frac{1}{2}[-2 + V(C_{3})] + \frac{1}{2}[-2 + 0]$$
+**Calculated Values ($\gamma=1$):**
 
-$$V(C_{3}) = \frac{1}{3}[-2 + V(\text{Pass})] + \frac{1}{3}[1 + 0.2\,V(C_{1}) + 0.4\,V(C_{2}) + 0.4\,V(C_{3})]$$
-
-$$V(\text{Pass}) = +10 + 0 = 10 \quad\text{(1 action: Sleep)}$$
-
-$$V(\text{FB}) = \frac{1}{2}[-1 + V(\text{FB})] + \frac{1}{2}[0 + V(C_{1})]$$
-
-Solving the linear system (from code):
-
-| State | $V^\pi$ ($\gamma=1$) |
-|-------|-----------|
-| C1    | $\approx -1.3$ |
-| C2    | $\approx -2.7$ |
-| C3    | $\approx  2.7$ |
-| Pass  |   $10.0$    |
-| Pub   | $\approx -0.8$ |
-| FB    | $\approx -2.3$ |
-| Sleep |    $0.0$    |
-
-*(slide approximations; exact values from iterative solution)*
-
-$$Q^{\pi}(C_{1}, \text{Study}) = -2 + V^{\pi}(C_{2}) \approx -2 + (-2.7) = -4.7$$
-$$Q^{\pi}(C_{1}, \text{Facebook}) = -1 + V^{\pi}(\text{FB}) \approx -1 + (-2.3) = -3.3$$
+| State | $V^\pi$ | Best Action ($Q^\pi$) |
+|-------|---------|-------------|
+| C1    | -2.08   | Study (-0.08) |
+| C2    | 1.92    | Study (3.85) |
+| C3    | 5.85    | Study (8.00) |
+| Pass  | 10.00   | Sleep (10.0) |
+| FB    | -3.08   | Quit (-2.08) |
 
 ---
 
 ## 4. Optimal Value Function $V^{\ast}$ and $Q^{\ast}$
 
-The **Bellman Optimality Equation**:
+$V^{\ast}(s) = \max_a Q^{\ast}(s,a) = \max_a \sum_{s'} P(s'|s,a)\bigl[R + \gamma\,V^{\ast}(s')\bigr]$.
 
-$$V^{\ast}(s) = \max_{a} \sum_{s'} P(s'|s,a)\bigl[R + \gamma\,V^{\ast}(s')\bigr]$$
-$$Q^{\ast}(s,a) = \sum_{s'} P(s'|s,a)\bigl[R + \gamma\,V^{\ast}(s')\bigr]$$
-$$\pi^{\ast}(s) = \arg\max_{a} Q^{\ast}(s,a)$$
+**Optimal Values (γ=1):**
 
-**Value Iteration** applies the Bellman optimality operator repeatedly:
-
-$$V_{k+1}(s) = \max_a \sum_{s'} P(s'|s,a)\bigl[R + \gamma\,V_{k}(s')\bigr]$$
-
-until $|V_{k+1} - V_{k}|_{\infty} < \theta$.
-
-**Optimal values (γ=1, from code):**
-
-| State | $V^{\ast}$ |
-|-------|-------|
-| C1    | $\approx 6.0$ |
-| C2    | $\approx 8.0$ |
-| C3    | $\approx 10.0$ |
-| Pass  | $10.0$ |
-| Pub   | $\approx 8.4$ |
-| FB    | $\approx 6.0$ |
-| Sleep | $0.0$ |
-
-**Optimal policy** (greedy from $V^{\ast}$):
-
-| State | $\pi^{\ast}(s)$ |
-|-------|-------|
-| C1    | Study |
-| C2    | Study |
-| C3    | Study |
-| Pass  | Sleep |
-| FB    | Quit  |
+| State | $V^{\ast}$ | $\pi^{\ast}(s)$ | Reasoning |
+|-------|-------|-------|-----------|
+| C1    | 4.0   | Study | $Q^*(C1, \text{Study}) = -2 + 6 = 4$; $Q^*(C1, \text{FB}) = -1 + 4 = 3$. |
+| C2    | 6.0   | Study | $Q^*(C2, \text{Study}) = -2 + 8 = 6$; $Q^*(C2, \text{Sleep}) = 0$. |
+| C3    | 8.0   | Study | $Q^*(C3, \text{Study}) = -2 + 10 = 8$; $Q^*(\text{Pub}) \approx 7.4$. |
+| Pass  | 10.0  | Sleep | Only one action. |
+| FB    | 4.0   | Quit  | $Q^*(FB, \text{Quit}) = 0 + 4 = 4$; $Q^*(FB, FB) = -1 + 4 = 3$. |
 
 ---
 

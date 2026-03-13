@@ -117,7 +117,7 @@ def _bellman_q(
     Compute Q(s, action) for all states s = (n1, n2).
 
     action ∈ {-MAX_MOVE, ..., MAX_MOVE}
-    positive = move from loc2 → loc1, negative = move from loc1 → loc2.
+    positive = move from loc1 → loc2, negative = move from loc2 → loc1.
 
     Returns array of shape (MAX_CARS+1, MAX_CARS+1).
     """
@@ -125,14 +125,14 @@ def _bellman_q(
 
     for n1, n2 in itertools.product(range(MAX_CARS + 1), repeat=2):
         moved = action
-        # Check feasibility
+        # Check feasibility: a > 0 means move 1->2, a < 0 means move 2->1
         if moved > 0:
-            moved = min(moved, n2)  # can't move more than available at loc2
+            moved = min(moved, n1)  # can't move more than available at loc1
         else:
-            moved = -min(-moved, n1)  # can't move more than available at loc1
+            moved = -min(-moved, n2)  # can't move more than available at loc2
 
-        n1_start = max(0, min(n1 + moved, MAX_CARS))
-        n2_start = max(0, min(n2 - moved, MAX_CARS))
+        n1_start = max(0, min(n1 - moved, MAX_CARS))
+        n2_start = max(0, min(n2 + moved, MAX_CARS))
 
         move_cost = abs(moved) * MOVE_COST
 
@@ -174,12 +174,12 @@ def policy_evaluation(
             a = int(policy[n1, n2])
             moved = a
             if moved > 0:
-                moved = min(moved, n2)
+                moved = min(moved, n1)
             else:
-                moved = -min(-moved, n1)
+                moved = -min(-moved, n2)
 
-            n1_start = max(0, min(n1 + moved, MAX_CARS))
-            n2_start = max(0, min(n2 - moved, MAX_CARS))
+            n1_start = max(0, min(n1 - moved, MAX_CARS))
+            n2_start = max(0, min(n2 + moved, MAX_CARS))
             move_cost = abs(moved) * MOVE_COST
 
             r = _EXP_REW_1[n1_start] + _EXP_REW_2[n2_start] - move_cost
@@ -272,7 +272,7 @@ def plot_results(
         colors="black",
         linewidths=0.5,
     )
-    plt.colorbar(im, ax=ax, label="Cars moved (loc2→loc1)")
+    plt.colorbar(im, ax=ax, label="Cars moved (loc1→loc2)")
     ax.set_xlabel("Cars at Location 2")
     ax.set_ylabel("Cars at Location 1")
     ax.set_title("Optimal Policy π*")
