@@ -12,6 +12,7 @@ from src.q2_grid_world.grid_world import (
     iterative_policy_eval,
     iterative_policy_eval_step,
     run_to_convergence,
+    run_to_convergence_inplace,
 )
 
 
@@ -83,6 +84,12 @@ class TestGridWorld:
         V_conv, _ = run_to_convergence(theta=1e-6)
         V_next = iterative_policy_eval_step(V_conv)
         assert np.allclose(V_conv, V_next, atol=1e-5)
+
+    def test_convergence_inplace(self) -> None:
+        """In-place and regular convergence should reach the same V_infinity."""
+        V_reg, _ = run_to_convergence(theta=1e-8)
+        V_inp, _ = run_to_convergence_inplace(theta=1e-8)
+        assert np.allclose(V_reg, V_inp, atol=1e-4)
 
     def test_greedy_policy_shape(self) -> None:
         V_conv, _ = run_to_convergence()

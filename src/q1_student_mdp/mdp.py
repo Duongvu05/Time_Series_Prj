@@ -17,7 +17,7 @@ from numpy.typing import NDArray
 # ---------------------------------------------------------------------------
 
 # States (indices)
-STATES: list[str] = ["C1", "C2", "C3", "Pass", "FB", "Sleep"]
+STATES: list[str] = ["C1", "C2", "C3", "FB", "Sleep"]
 S_IDX: dict[str, int] = {s: i for i, s in enumerate(STATES)}
 N_STATES = len(STATES)
 TERMINAL = S_IDX["Sleep"]
@@ -27,7 +27,6 @@ ACTIONS: dict[int, list[str]] = {
     S_IDX["C1"]:   ["Study", "Facebook"],
     S_IDX["C2"]:   ["Study", "Sleep"],
     S_IDX["C3"]:   ["Study", "Pub"],
-    S_IDX["Pass"]: ["Sleep"],
     S_IDX["FB"]:   ["Facebook", "Quit"],
     S_IDX["Sleep"]: ["Stay"],
 }
@@ -39,11 +38,10 @@ _TRANSITIONS: list[tuple[str, str, str, float, float]] = [
     ("Facebook", "C1",   "FB",   1.0,  -1.0),
     ("Study",    "C2",   "C3",   1.0,  -2.0),
     ("Sleep",    "C2",   "Sleep",1.0,   0.0),
-    ("Study",    "C3",   "Pass", 1.0,  -2.0),
+    ("Study",    "C3",   "Sleep",1.0,  10.0),
     ("Pub",      "C3",   "C1",   0.2,   1.0),
     ("Pub",      "C3",   "C2",   0.4,   1.0),
     ("Pub",      "C3",   "C3",   0.4,   1.0),
-    ("Sleep",    "Pass", "Sleep",1.0,  10.0),
     ("Facebook", "FB",   "FB",   1.0,  -1.0),
     ("Quit",     "FB",   "C1",   1.0,   0.0),
     ("Stay",     "Sleep","Sleep",1.0,   0.0),

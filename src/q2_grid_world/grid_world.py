@@ -66,6 +66,22 @@ def iterative_policy_eval_step(
     return V_new
 
 
+def iterative_policy_eval_inplace_step(
+    V: NDArray[np.float64],
+) -> NDArray[np.float64]:
+    """One sweep using in-place updates."""
+    for s in range(N_STATES):
+        if s in TERMINAL_STATES:
+            V[s] = 0.0
+            continue
+        v = 0.0
+        for a in range(N_ACTIONS):
+            s_next, rew = _P[s][a]
+            v += (1.0 / N_ACTIONS) * (rew + GAMMA * V[s_next])
+        V[s] = v
+    return V
+
+
 def iterative_policy_eval(k: int) -> NDArray[np.float64]:
     """Run k sweeps from V_0 = 0. Return V_k."""
     V = np.zeros(N_STATES, dtype=np.float64)
@@ -86,6 +102,20 @@ def run_to_convergence(theta: float = 1e-6) -> tuple[NDArray[np.float64], int]:
             logger.info("Grid world converged after {} sweeps (delta={:.2e})", k, delta)
             return V_new, k
         V = V_new
+
+
+def run_to_convergence_inplace(theta: float = 1e-6) -> tuple[NDArray[np.float64], int]:
+    """Run in-place evaluation until convergence."""
+    V = np.zeros(N_STATES, dtype=np.float64)
+    k = 0
+    while True:
+        V_prev = V.copy()
+        V = iterative_policy_eval_inplace_step(V)
+        k += 1
+        delta = float(np.max(np.abs(V - V_prev)))
+        if delta < theta:
+            logger.info("In-place converged after {} sweeps (delta={:.2e})", k, delta)
+            return V, k
 
 
 # ---------------------------------------------------------------------------

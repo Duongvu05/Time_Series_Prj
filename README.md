@@ -111,9 +111,9 @@ pdflatex slides.tex
 
 ## Answers to Questions
 
-### Q1 – Value Functions with Policy $\pi$ (Lecture 2, pp. 29–47)
+### Q1 – Value Functions with Policy $\pi$ (Câu 1 - ML2.pdf)
 
-**MDP:** 7 states: C1, C2, C3, Pass, Pub, FB, Sleep (terminal).
+**MDP:** 5 states: C1, C2, C3, FB, Sleep (terminal).
 
 **Bellman Expectation Equation:**
 $$V^{\pi}(s) = \sum_a \pi(a|s) \sum_{s'} P(s'|s,a)[R(s,a,s') + \gamma V^{\pi}(s')]$$
@@ -124,11 +124,11 @@ $$V^{\pi}(s) = \sum_a \pi(a|s) Q^{\pi}(s,a) \quad \text{(consistency)}$$
 
 | State | $V^{\pi}$ | $V^{\ast}$ | $\pi^{\ast}$ |
 |-------|---------|-------|---------|
-| C1 | $-3.31$ | $6.00$ | $\pi^{\ast}(\text{C1}) = \text{Study}$ |
-| C2 | $+0.69$ | $8.00$ | $\pi^{\ast}(\text{C2}) = \text{Study}$ |
-| C3 | $+5.38$ | $10.00$ | $\pi^{\ast}(\text{C3}) = \text{Study}$ |
-| Pass | $10.00$ | $10.00$ | $\pi^{\ast}(\text{Pass}) = \text{Sleep}$ |
-| FB | $-4.31$ | $6.00$ | $\pi^{\ast}(\text{FB}) = \text{Quit}$ |
+| Facebook | $-2.3$ | $6.0$ | $\pi^{\ast}(\text{FB}) = \text{Quit}$ |
+| C1 | $-1.3$ | $6.0$ | $\pi^{\ast}(\text{C1}) = \text{Study}$ |
+| C2 | $+2.7$ | $8.0$ | $\pi^{\ast}(\text{C2}) = \text{Study}$ |
+| C3 | $+7.4$ | $10.0$ | $\pi^{\ast}(\text{C3}) = \text{Study}$ |
+| Sleep | $0.00$ | $0.00$ | $\pi^{\ast}(\text{Sleep}) = \text{Stay}$ |
 
 **Optimal equations:**  
 $$V^{\ast}(s) = \max_{a} Q^{\ast}(s,a)$$
@@ -140,32 +140,31 @@ found by Value Iteration (apply $T^{\ast}$ until $|V_{k+1} - V_{k}|_{\infty} < \
 
 **Setup:** 4×4 grid, random policy ($1/4$ each direction), $\gamma=1$, $R=-1$, terminals: $\{0, 15\}$.
 
+**Algorithm Options:**
+1. **Synchronous:** Uses two arrays, updates after a full sweep.
+2. **In-place:** Uses one array, updates values immediately (converges faster).
+
 **k=1:** Every non-terminal cell gets $V_{1}(s) = -1.0$ (since $V_{0}=0$ everywhere).
 
 **k=2 (hand computation):**
+- State 1 (top row, col 1): $V_{2}(1) = \frac{1}{4}(-2 - 2 - 1 - 2) = -1.75$
+- State 5 (interior): $V_{2}(5) = \frac{1}{4}(-8) = -2.00$
 
-State 1 (top row, col 1) — N hits wall, reflects back to state 1:
-- N → 1 (wall):  $-1 + V_{1}(1) = -1 + (-1) = -2$
-- S → 5:         $-1 + V_{1}(5) = -2$
-- W → 0 (term):  $-1 + V_{1}(0) = -1 + 0 = -1$
-- E → 2:         $-1 + V_{1}(2) = -2$
-
-$V_{2}(1) = \frac{1}{4}(-2 - 2 - 1 - 2) = -7/4 = -1.75$
-
-State 5 (interior): all 4 neighbors non-terminal:  `$V_{2}(5) = \frac{1}{4}(-8) = -2.00$`
-
-**k=3 (hand computation)** using V₂:
-
-State 1: $V_{3}(1) = 1/4 \times (-2.75 - 3.00 - 1.00 - 3.00) = -2.4375$
-
-**Code for any k:**
+**Code Examples:**
 ```python
-from src.q2_grid_world.grid_world import iterative_policy_eval, run_to_convergence
-V_k = iterative_policy_eval(k=3)          # any k
-V_inf, steps = run_to_convergence()       # k -> inf
+from src.q2_grid_world.grid_world import (
+    iterative_policy_eval, 
+    run_to_convergence, 
+    run_to_convergence_inplace
+)
+
+# Standard convergence
+V_inf, steps = run_to_convergence()
+# Faster convergence via in-place updates
+V_inf_inp, steps_inp = run_to_convergence_inplace()
 ```
 
-**k → ∞:** Values decrease monotonically. Grid world converges in ~200 sweeps (episodic → effectively contracting). Greedy policy from $V^\pi$ always points toward nearest terminal.
+**k → ∞:** Values decrease monotonically. Grid world converges in ~250 sweeps. Greedy policy from $V^\pi$ always points toward nearest terminal.
 
 ---
 

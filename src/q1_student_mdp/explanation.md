@@ -1,7 +1,7 @@
 # Q1: Student MDP – Value Functions and Q-Values
 
-**Source:** Silver Lecture 2, pages 29–47  
-**MDP Definition:** States = {C1, C2, C3, Pass, Pub, FB, Sleep}; Sleep is terminal.
+**Source:** Câu 1 - ML2.pdf
+**MDP Definition:** States = {C1, C2, C3, FB, Sleep}; Sleep is terminal.
 
 ---
 
@@ -19,9 +19,9 @@ Relationship: $V^{\pi}(s) = \sum_a \pi(a|s)\,Q^{\pi}(s,a)$.
 
 ---
 
-## 2. Student MDP Definition (Slide 29 Version)
+## 2. Student MDP Definition (PDF Version)
 
-**States:** {C1, C2, C3, Pass, FB} are non-terminal. {Sleep} is terminal.
+**States:** {C1, C2, C3, FB} are non-terminal. {Sleep} is terminal.
 
 | From  | Action   | To    | Prob | Reward |
 |-------|----------|-------|------|--------|
@@ -29,11 +29,10 @@ Relationship: $V^{\pi}(s) = \sum_a \pi(a|s)\,Q^{\pi}(s,a)$.
 | C1    | Facebook | FB    | 1.0  | −1     |
 | C2    | Study    | C3    | 1.0  | −2     |
 | C2    | Sleep    | Sleep | 1.0  | 0      |
-| C3    | Study    | Pass  | 1.0  | −2     |
+| C3    | Study    | Sleep | 1.0  | +10    |
 | C3    | Pub      | C1    | 0.2  | +1     |
 | C3    | Pub      | C2    | 0.4  | +1     |
 | C3    | Pub      | C3    | 0.4  | +1     |
-| Pass  | Sleep    | Sleep | 1.0  | +10    |
 | FB    | Facebook | FB    | 1.0  | −1     |
 | FB    | Quit     | C1    | 1.0  | 0      |
 
@@ -45,21 +44,20 @@ Each decision state has 2 actions, so $\pi(a|s) = 0.5$.
 
 **Bellman Equations:**
 
-1.  $V(C_1) = 0.5 \underbrace{[-2 + V(C_2)]}_{Q(C_1, \text{Study})} + 0.5 \underbrace{[-1 + V(\text{FB})]}_{Q(C_1, \text{FB})}$
-2.  $V(C_2) = 0.5 \underbrace{[-2 + V(C_3)]}_{Q(C_2, \text{Study})} + 0.5 \underbrace{[0 + 0]}_{Q(C_2, \text{Sleep})}$
-3.  $V(C_3) = 0.5 \underbrace{[-2 + V(\text{Pass})]}_{Q(C_3, \text{Study})} + 0.5 \underbrace{[1 + 0.2 V(C_1) + 0.4 V(C_2) + 0.4 V(C_3)]}_{Q(C_3, \text{Pub})}$
-4.  $V(\text{FB}) = 0.5 \underbrace{[-1 + V(\text{FB})]}_{Q(\text{FB}, \text{FB})} + 0.5 \underbrace{[0 + V(C_1)]}_{Q(\text{FB}, \text{Quit})}$
-5.  $V(\text{Pass}) = +10 + 0 = 10 \quad$ (1 action: Sleep)
+1.  $v(F) = 0.5 [-1 + v(F)] + 0.5 [0 + v(C1)] \implies v(F) = v(C1) - 1$
+2.  $v(C1) = 0.5 [-1 + v(F)] + 0.5 [-2 + v(C2)] \implies v(C1) = v(C2) - 4$
+3.  $v(C2) = 0.5 [-2 + v(C3)] + 0.5 [0 + v(S)] \implies v(C2) = 0.5 v(C3) - 1$
+4.  $v(C3) = 0.5 [10 + v(S)] + 0.5 [1 + 0.2 v(C1) + 0.4 v(C2) + 0.4 v(C3)]$
 
 **Calculated Values ($\gamma=1$):**
 
-| State | $V^\pi$ | Best Action ($Q^\pi$) |
-|-------|---------|-------------|
-| C1    | -2.08   | Study (-0.08) |
-| C2    | 1.92    | Study (3.85) |
-| C3    | 5.85    | Study (8.00) |
-| Pass  | 10.00   | Sleep (10.0) |
-| FB    | -3.08   | Quit (-2.08) |
+| State | $V^\pi$ | Action-Value Function ($Q^\pi$) |
+|-------|---------|--------------------------------|
+| Facebook | -2.3 | Facebook: -3.3, Quit: -1.3 |
+| C1    | -1.3    | Facebook: -3.3, Study: 0.7  |
+| C2    | 2.7     | Sleep: 0, Study: 5.4        |
+| C3    | 7.4     | Study: 10, Pub: 4.78        |
+| Sleep | 0.0     | -                              |
 
 ---
 
@@ -71,11 +69,11 @@ $V^{\ast}(s) = \max_a Q^{\ast}(s,a) = \max_a \sum_{s'} P(s'|s,a)\bigl[R + \gamma
 
 | State | $V^{\ast}$ | $\pi^{\ast}(s)$ | Reasoning |
 |-------|-------|-------|-----------|
-| C1    | 4.0   | Study | $Q^*(C1, \text{Study}) = -2 + 6 = 4$; $Q^*(C1, \text{FB}) = -1 + 4 = 3$. |
-| C2    | 6.0   | Study | $Q^*(C2, \text{Study}) = -2 + 8 = 6$; $Q^*(C2, \text{Sleep}) = 0$. |
-| C3    | 8.0   | Study | $Q^*(C3, \text{Study}) = -2 + 10 = 8$; $Q^*(\text{Pub}) \approx 7.4$. |
-| Pass  | 10.0  | Sleep | Only one action. |
-| FB    | 4.0   | Quit  | $Q^*(FB, \text{Quit}) = 0 + 4 = 4$; $Q^*(FB, FB) = -1 + 4 = 3$. |
+| Facebook | 6.0 | Quit | $Q^*(F, \text{Quit}) = 0 + 6 = 6$; $Q^*(F, F) = -1 + 6 = 5$. |
+| C1    | 6.0   | Study | $Q^*(C1, \text{Study}) = -2 + 8 = 6$; $Q^*(C1, FB) = -1 + 6 = 5$. |
+| C2    | 8.0   | Study | $Q^*(C2, \text{Study}) = -2 + 10 = 8$; $Q^*(C2, \text{Sleep}) = 0$. |
+| C3    | 10.0  | Study | $Q^*(C3, \text{Study}) = 10 + 0 = 10$; $Q^*(C3, \text{Pub}) = 1 + 0.2(6) + 0.4(8) + 0.4(10) = 9.4$. |
+| Sleep | 0.0   | Stay  | Terminal state. |
 
 ---
 
