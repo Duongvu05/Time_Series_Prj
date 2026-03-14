@@ -6,14 +6,14 @@
 
 ## Problem Setup
 
-Jack manages two car rental locations. Each morning, customers arrive and rent cars (if available), and Jack earns **$\$10/\text{car}$ rented**. Overnight, Jack can move cars between locations (up to **$5/\text{night}$**, at **$\$2/\text{car}$**).
+Jack manages two car rental locations. Each morning, customers arrive and rent cars (if available), and Jack earns **\$10/car rented**. Overnight, Jack can move cars between locations (up to **5/night**, at **\$2/car**).
 
 | Parameter | Description | Value |
 |-----------|-------------|-------|
 | `MAX_CARS` | Max cars per location | 20 |
 | `MAX_MOVE` | Max cars moved overnight | 5 |
-| Rental reward | Per rental | +$\$10$ |
-| Move cost | Per car moved | -$\$2$ |
+| Rental reward | Per rental | +\$10 |
+| Move cost | Per car moved | -\$2 |
 | $\lambda_{\text{rent}_{1}}$ | Poisson rate, rentals at loc 1 | $3$ |
 | $\lambda_{\text{rent}_{2}}$ | Poisson rate, rentals at loc 2 | $4$ |
 | $\lambda_{\text{ret}_{1}}$  | Poisson rate, returns at loc 1 | $3$ |

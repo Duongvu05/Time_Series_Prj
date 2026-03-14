@@ -6,20 +6,20 @@
 ## Dependencies / Packages
 
 ### Project Management
-[![Managed by uv](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/uv/main/assets/badge/v1.json)](https://github.com/astral-sh/uv)
+[![Managed by uv](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/uv/main/assets/badge/v0.json)](https://github.com/astral-sh/uv)
 
 ### Core Stack
-![Python](https://img.shields.io/badge/Python-3.11+-3776AB?style=for-the-badge&logo=python&logoColor=white)
-![NumPy](https://img.shields.io/badge/NumPy-≥2.0-013243?style=for-the-badge&logo=numpy&logoColor=white)
-![SciPy](https://img.shields.io/badge/SciPy-≥1.14-8CAAE6?style=for-the-badge&logo=scipy&logoColor=white)
-![Matplotlib](https://img.shields.io/badge/Matplotlib-≥3.9-11557C?style=for-the-badge&logo=python&logoColor=white)
-![Loguru](https://img.shields.io/badge/Loguru-≥0.7-FF6B35?style=for-the-badge&logo=python&logoColor=white)
-![Jupyter](https://img.shields.io/badge/Jupyter-≥7.3-F37626?style=for-the-badge&logo=jupyter&logoColor=white)
+![Python](https://img.shields.io/badge/Python-3.11+-3776AB?logo=python&logoColor=white)
+![NumPy](https://img.shields.io/badge/NumPy-≥2.0-013243?logo=numpy&logoColor=white)
+![SciPy](https://img.shields.io/badge/SciPy-≥1.14-8CAAE6?logo=scipy&logoColor=white)
+![Matplotlib](https://img.shields.io/badge/Matplotlib-≥3.9-11557C?logo=python&logoColor=white)
+![Loguru](https://img.shields.io/badge/Loguru-≥0.7-FF6B35?logo=python&logoColor=white)
+![Jupyter](https://img.shields.io/badge/Jupyter-≥7.3-F37626?logo=jupyter&logoColor=white)
 
 ### Development Tools
 [![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
-![Pyright](https://img.shields.io/badge/Pyright-≥1.1-1E90FF?style=for-the-badge&logo=python&logoColor=white)
-![pytest](https://img.shields.io/badge/pytest-≥8.3-0A9EDC?style=for-the-badge&logo=pytest&logoColor=white)
+![Pyright](https://img.shields.io/badge/Pyright-≥1.1-1E90FF?logo=python&logoColor=white)
+![pytest](https://img.shields.io/badge/pytest-≥8.3-0A9EDC?logo=pytest&logoColor=white)
 
 ---
 
@@ -121,8 +121,11 @@ pdflatex slides.tex
 **MDP:** 5 states: C1, C2, C3, FB, Sleep (terminal).
 
 **Bellman Expectation Equation:**
+
 $$V^{\pi}(s) = \sum_a \pi(a|s) \sum_{s'} P(s'|s,a)[R(s,a,s') + \gamma V^{\pi}(s')]$$
+
 $$Q^{\pi}(s,a) = \sum_{s'} P(s'|s,a)[R(s,a,s') + \gamma V^{\pi}(s')]$$
+
 $$V^{\pi}(s) = \sum_a \pi(a|s) Q^{\pi}(s,a) \quad \text{(consistency)}$$
 
 **Computed results** ($\gamma=1$, uniform random policy):
@@ -136,7 +139,9 @@ $$V^{\pi}(s) = \sum_a \pi(a|s) Q^{\pi}(s,a) \quad \text{(consistency)}$$
 | Sleep | $0.00$ | $0.00$ | $\pi^{\ast}(\text{Sleep}) = \text{Stay}$ |
 
 **Optimal equations:**  
+
 $$V^{\ast}(s) = \max_{a} Q^{\ast}(s,a)$$
+
 found by Value Iteration (apply $T^{\ast}$ until $|V_{k+1} - V_{k}|_{\infty} < \theta$).
 
 ---
@@ -180,6 +185,7 @@ V_inf_inp, steps_inp = run_to_convergence_inplace()
 **Key optimisation:** Precompute Poisson sums into matrices $\text{ExpRew}[n]$ and $\text{Trans}[n,n']$, so the Bellman update reduces to:
 
 $$\mathbb{E}[V(n_{1}', n_{2}')] = \text{Trans}_{1}[n_{1}, :] \cdot V \cdot \text{Trans}_{2}[n_{2}, :]^{\top}$$
+
 *(Implemented as efficient matrix-vector products)*
 
 **Policy Iteration:** Converges in $\approx 4$ steps. Final policy moves cars from loc2→loc1 when loc1 is depleted ($\lambda_{\text{rent}_{2}}=4 > \lambda_{\text{rent}_{1}}=3$, so loc2 fills up faster).
@@ -195,7 +201,9 @@ See full proof: [`src/q4_contraction/proof.md`](src/q4_contraction/proof.md)
 **Theorem (Banach Fixed-Point):** If $T$ is a $\gamma$-contraction on a complete metric space, it has a unique fixed point, and iterates converge at rate $O(\gamma^k)$.
 
 **$T^{\pi}$ is a $\gamma$-contraction:**
+
 $$|T^{\pi} V_{1} - T^{\pi} V_{2}|_{\infty} \leq \gamma |V_{1} - V_{2}|_{\infty}$$
+
 *Proof:* Pull out $\gamma$, use triangle inequality, stochastic matrix rows sum to 1.
 
 **$T^{\ast}$ is a $\gamma$-contraction:** Use $|\max_{a} f(a) - \max_{a} g(a)| \leq \max_{a} |f(a) - g(a)|$.
