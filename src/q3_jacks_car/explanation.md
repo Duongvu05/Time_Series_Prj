@@ -6,19 +6,19 @@
 
 ## Problem Setup
 
-Jack manages two car rental locations. Each morning, customers arrive and rent cars (if available), and Jack earns **$10/car rented**. Overnight, Jack can move cars between locations (up to **5/night**, at **$2/car**).
+Jack manages two car rental locations. Each morning, customers arrive and rent cars (if available), and Jack earns **$\$10/\text{car}$ rented**. Overnight, Jack can move cars between locations (up to **$5/\text{night}$**, at **$\$2/\text{car}$**).
 
 | Parameter | Description | Value |
 |-----------|-------------|-------|
 | `MAX_CARS` | Max cars per location | 20 |
 | `MAX_MOVE` | Max cars moved overnight | 5 |
-| Rental reward | Per rental | +$10 |
-| Move cost | Per car moved | -$2 |
-| $\lambda_{\text{rent}_{1}}$ | Poisson rate, rentals at loc 1 | 3 |
-| $\lambda_{\text{rent}_{2}}$ | Poisson rate, rentals at loc 2 | 4 |
-| $\lambda_{\text{ret}_{1}}$  | Poisson rate, returns at loc 1 | 3 |
-| $\lambda_{\text{ret}_{2}}$  | Poisson rate, returns at loc 2 | 2 |
-| $\gamma$ | Discount factor | 0.9 |
+| Rental reward | Per rental | +$\$10$ |
+| Move cost | Per car moved | -$\$2$ |
+| $\lambda_{\text{rent}_{1}}$ | Poisson rate, rentals at loc 1 | $3$ |
+| $\lambda_{\text{rent}_{2}}$ | Poisson rate, rentals at loc 2 | $4$ |
+| $\lambda_{\text{ret}_{1}}$  | Poisson rate, returns at loc 1 | $3$ |
+| $\lambda_{\text{ret}_{2}}$  | Poisson rate, returns at loc 2 | $2$ |
+| $\gamma$ | Discount factor | $0.9$ |
 
 ---
 
@@ -45,7 +45,7 @@ Instead of summing over Poisson samples at every iteration, we precompute for ea
 
 $$\text{ExpRew}_{i}[n] = \sum_{req=0}^{\infty} P(req;\lambda_{i}) \cdot \min(req, n) \cdot 10$$
 
-$$\text{Trans}_{i}[n, n_{\text{next}}] = \sum_{req} \sum_{ret} P(req;\lambda_{i}) \cdot P(ret;\lambda_{i}^{\text{ret}}) \cdot \mathbf{1}[\min(n-req^{+}, 0)+ret = n_{\text{next}}]$$
+$$\text{Trans}_{i}[n, n_{\text{next}}] = \sum_{req} \sum_{ret} P(req;\lambda_{i}) \cdot P(ret;\lambda_{i}^{\text{ret}}) \cdot \mathbf{1}[\min(n-req^+, 0)+ret = n_{\text{next}}]$$
 
 Then the expected future value for state $(n_{1}, n_{2})$ reduces to:
 

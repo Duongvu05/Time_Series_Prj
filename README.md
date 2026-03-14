@@ -5,16 +5,21 @@
 
 ## Dependencies / Packages
 
+### Project Management
+[![Managed by uv](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/uv/main/assets/badge/v1.json)](https://github.com/astral-sh/uv)
+
+### Core Stack
 ![Python](https://img.shields.io/badge/Python-3.11+-3776AB?style=for-the-badge&logo=python&logoColor=white)
 ![NumPy](https://img.shields.io/badge/NumPy-≥2.0-013243?style=for-the-badge&logo=numpy&logoColor=white)
-![Matplotlib](https://img.shields.io/badge/Matplotlib-≥3.9-11557C?style=for-the-badge&logo=python&logoColor=white)
 ![SciPy](https://img.shields.io/badge/SciPy-≥1.14-8CAAE6?style=for-the-badge&logo=scipy&logoColor=white)
+![Matplotlib](https://img.shields.io/badge/Matplotlib-≥3.9-11557C?style=for-the-badge&logo=python&logoColor=white)
 ![Loguru](https://img.shields.io/badge/Loguru-≥0.7-FF6B35?style=for-the-badge&logo=python&logoColor=white)
 ![Jupyter](https://img.shields.io/badge/Jupyter-≥7.3-F37626?style=for-the-badge&logo=jupyter&logoColor=white)
-![pytest](https://img.shields.io/badge/pytest-≥8.3-0A9EDC?style=for-the-badge&logo=pytest&logoColor=white)
-![Ruff](https://img.shields.io/badge/Ruff-≥0.9-D7FF64?style=for-the-badge&logo=ruff&logoColor=black)
+
+### Development Tools
+[![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
 ![Pyright](https://img.shields.io/badge/Pyright-≥1.1-1E90FF?style=for-the-badge&logo=python&logoColor=white)
-![uv](https://img.shields.io/badge/uv-package_manager-6E40C9?style=for-the-badge&logo=python&logoColor=white)
+![pytest](https://img.shields.io/badge/pytest-≥8.3-0A9EDC?style=for-the-badge&logo=pytest&logoColor=white)
 
 ---
 

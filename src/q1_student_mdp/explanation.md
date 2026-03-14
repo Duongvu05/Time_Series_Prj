@@ -53,11 +53,11 @@ Each decision state has 2 actions, so $\pi(a|s) = 0.5$.
 
 | State | $V^\pi$ | Action-Value Function ($Q^\pi$) |
 |-------|---------|--------------------------------|
-| Facebook | -2.3 | Facebook: -3.3, Quit: -1.3 |
-| C1    | -1.3    | Facebook: -3.3, Study: 0.7  |
-| C2    | 2.7     | Sleep: 0, Study: 5.4        |
-| C3    | 7.4     | Study: 10, Pub: 4.78        |
-| Sleep | 0.0     | -                              |
+| Facebook | $-2.3$ | Facebook: $-3.3$, Quit: $-1.3$ |
+| C1    | $-1.3$    | Facebook: $-3.3$, Study: $0.7$  |
+| C2    | $2.7$     | Sleep: $0$, Study: $5.4$        |
+| C3    | $7.4$     | Study: $10$, Pub: $4.78$        |
+| Sleep | $0.0$     | -                              |
 
 ---
 
@@ -69,10 +69,10 @@ $V^{\ast}(s) = \max_a Q^{\ast}(s,a) = \max_a \sum_{s'} P(s'|s,a)\bigl[R + \gamma
 
 | State | $V^{\ast}$ | $\pi^{\ast}(s)$ | Reasoning |
 |-------|-------|-------|-----------|
-| Facebook | 6.0 | Quit | $Q^*(F, \text{Quit}) = 0 + 6 = 6$; $Q^*(F, F) = -1 + 6 = 5$. |
-| C1    | 6.0   | Study | $Q^*(C1, \text{Study}) = -2 + 8 = 6$; $Q^*(C1, FB) = -1 + 6 = 5$. |
-| C2    | 8.0   | Study | $Q^*(C2, \text{Study}) = -2 + 10 = 8$; $Q^*(C2, \text{Sleep}) = 0$. |
-| C3    | 10.0  | Study | $Q^*(C3, \text{Study}) = 10 + 0 = 10$; $Q^*(C3, \text{Pub}) = 1 + 0.2(6) + 0.4(8) + 0.4(10) = 9.4$. |
+| Facebook | $6.0$ | Quit | $Q^*(F, \text{Quit}) = 0 + 6 = 6$; $Q^*(F, F) = -1 + 6 = 5$. |
+| C1    | $6.0$   | Study | $Q^*(C1, \text{Study}) = -2 + 8 = 6$; $Q^*(C1, FB) = -1 + 6 = 5$. |
+| C2    | $8.0$   | Study | $Q^*(C2, \text{Study}) = -2 + 10 = 8$; $Q^*(C2, \text{Sleep}) = 0$. |
+| C3    | $10.0$  | Study | $Q^*(C3, \text{Study}) = 10 + 0 = 10$; $Q^*(C3, \text{Pub}) = 1 + 0.2(6) + 0.4(8) + 0.4(10) = 9.4$. |
 | Sleep | 0.0   | Stay  | Terminal state. |
 
 ---
