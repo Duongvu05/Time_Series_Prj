@@ -8,12 +8,14 @@ wheels/
 
 # Virtual environments
 .venv
+.agents
 
 # LaTeX and slides
 slides/
 
 # Generated / binary outputs
 *.pdf
+*.zip
 notebooks/jacks_car_policy.png
 notebooks/contraction_convergence.png
 
